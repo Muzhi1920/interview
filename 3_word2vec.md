@@ -1,3 +1,4 @@
+<span id="jump">3_word2vec.md</span>
 Negative Sampling
 通过上一章的学习，我们知道无论是CBOW还是Skip-gram模型，其实都是分类模型。对于机器学习中的分类任务，在训练的时候不但要给正例，还要给负例。对于Hierarchical Softmax，负例是二叉树的其他路径。对于Negative Sampling，负例是随机挑选出来的。据说Negative Sampling能提高速度、改进模型质量。
 
