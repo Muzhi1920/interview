@@ -1,171 +1,41 @@
 # word2vec
-详见[《word2vec中的数学原理.pdf》](https://github.com/yuyinxiao/interview/blob/master/doc/word2vec中的数学原理.pdf)
+[《word2vec中的数学原理.pdf》](https://github.com/yuyinxiao/interview/blob/master/doc/word2vec-中的数学原理详解.pdf) 
+[网页版笔记](http://www.hankcs.com/nlp/word2vec.html)
 ## Negative Sampling
-通过上一章的学习，我们知道无论是CBOW还是Skip-gram模型，其实都是分类模型。对于机器学习中的分类任务，在训练的时候不但要给正例，还要给负例。对于Hierarchical Softmax，负例是二叉树的其他路径。对于Negative Sampling，负例是随机挑选出来的。据说Negative Sampling能提高速度、改进模型质量。
+对于机器学习中的分类任务，在训练的时候不但要给正例，还要给负例。对于Hierarchical Softmax，负例是二叉树的其他路径。对于Negative Sampling，负例是随机挑选出来的。Negative Sampling能**提高速度、改进模型质量。**
 
-CBOW
+### CBOW
 给定训练样本，即一个词w和它的上下文Context(w)，Context(w)是输入，w是输出。那么w就是正例，词汇表中其他的词语的就是负例。假设我们通过某种采样方法获得了负例子集NEG(w)。对于正负样本，分别定义一个标签：
+$L^w(\tilde{w})=\left \{\begin{matrix}
+{1, \tilde{w}=w;} & \\ 
+{0, \tilde{w}\neq w;}& 
+\end{matrix}\right.$
+正样本为1，负样本为0。
 
-屏幕快照 2016-07-17 下午2.18.20.png
-
-也即正样本为1，负样本为0。
-
-对于给定正样本屏幕快照 2016-07-17 下午2.20.18.png，我们希望最大化：
-
-屏幕快照 2016-07-17 下午2.21.21.png
-
+对于给定正样本（Context(w),w）我们希望最大化：$g(w)=\prod _{u{\epsilon {\left \{w\right\}}\cup NEG(w)}} p(u|Context(w))$
 其中，
+$p(u|Context(w))=[\sigma (X_w^T\theta ^u)]^{L^w(u)}\cdot [1-\sigma(X_w^T\theta ^u)]^{1-L^w(u))}$
 
-屏幕快照 2016-07-17 下午2.22.46.png
-
-也就是说，当u是正例时，屏幕快照 2016-07-17 下午2.25.48.png越大越好，当u是负例时，屏幕快照 2016-07-17 下午2.25.48.png越小越好。因为屏幕快照 2016-07-17 下午2.25.48.png等于模型预测样本为正例的概率，当答案就是正的时候，我们希望这个概率越大越好，当答案是负的时候，我们希望它越小越好，这样才能说明该模型是个明辨是非的好同志。
-
+也就是说，当u是正例时，$\sigma (X_w^T\theta ^u)$越大越好，当u是负例时，$\sigma (X_w^T\theta ^u)$越小越好。因为$\sigma (X_w^T\theta ^u)$等于模型预测样本为正例的概率，当答案就是正的时候，我们希望这个概率越大越好，当答案是负的时候，我们希望它越小越好，模型也符合极大似然估计。
+$\log\prod _{w\epsilon C} g(w)=\sum _{w\epsilon C}\log g(w)$
+![avatat](img/28.jpg)
 每个词都是如此，语料库有多个词，我们将g累积得到优化目标。因为对数方便计算，我们对其取对数得到目标函数：
+训练伪码为：![avatat](img/30.jpg)
 
-屏幕快照 2016-07-17 下午2.30.13.png屏幕快照 2016-07-17 下午2.30.29.png
+### Skip-gram
+对于(w,Context(w))我们希望最大化：$g(w)=\prod _{\tilde{w}\epsilon Context(w)} \prod _{u\epsilon \left \{ w \right \}\cup NEG^{\tilde{w}}(w)}p(u|\tilde w)$
+$L =\sum _{w\epsilon C} \sum _{\tilde{w}\epsilon Context(w)} \sum _{u\epsilon \left \{ w \right  \}   \cup NEG^{\tilde w }(w)} L(w,\tilde w,u)$
+![avatat](img/34.jpg)
+![avatat](img/33.jpg)
 
-屏幕快照 2016-07-17 下午2.30.41.png
+训练伪码为：![avatat](img/31.jpg)
 
-记双重求和中的每一项为：
+#### 补充Huffman树
+Huffman树只是二叉树中具体的一种，word2vec训练的时候按照词频将每个词语Huffman编码，由于Huffman编码中词频越高的词语对应的编码越短。所以越高频的词语在Hierarchical Softmax过程中经过的二分类节点就越少，整体计算量就更少了。
 
-屏幕快照 2016-07-17 下午2.35.00.png
-
-求梯度：
-
-屏幕快照 2016-07-17 下午2.35.20.png屏幕快照 2016-07-17 下午2.36.01.png
-
-于是屏幕快照 2016-07-17 下午2.37.02.png的更新方法为：
-
-屏幕快照 2016-07-17 下午2.37.34.png
-
-利用对称性得到关于屏幕快照 2016-07-17 上午10.52.10.png的梯度：
-
-屏幕快照 2016-07-17 下午2.38.12.png
-
-将该更新应用到每个词向量上去：
-
-屏幕快照 2016-07-17 下午2.40.01.png
-
-训练伪码为：
-
-屏幕快照 2016-07-17 下午2.40.41.png
-
-对应原版C代码的片段：
-
-f = 0;
-for (c = 0; c < layer1_size; c++)
-    f += neu1[c] * syn1neg[c + l2];
-if (f > MAX_EXP)
-    g = (label - 1) * alpha;
-else if (f < -MAX_EXP)
-    g = (label - 0) * alpha;
-else
-    g = (label - expTable[(int) ((f + MAX_EXP) * (EXP_TABLE_SIZE / MAX_EXP / 2))]) * alpha;
-for (c = 0; c < layer1_size; c++)
-    neu1e[c] += g * syn1neg[c + l2];
-for (c = 0; c < layer1_size; c++)
-    syn1neg[c + l2] += g * neu1[c];
-
-Skip-gram
-有了前三次的经验，这次轻车熟路地给出结论吧。颠倒样本的x和y部分，也即对屏幕快照 2016-07-17 下午2.48.48.png，我们希望最大化：
-
-屏幕快照 2016-07-17 下午2.49.32.png
-
-其中，
-
-屏幕快照 2016-07-17 下午2.50.05.png
-
-最终目标函数为：
-
-
-屏幕快照 2016-07-17 下午2.52.14.png屏幕快照 2016-07-17 下午2.52.27.png屏幕快照 2016-07-17 下午2.52.39.png
-
-其中，
-
-屏幕快照 2016-07-17 下午2.53.36.png
-
-分别求出梯度：
-
-
-屏幕快照 2016-07-17 下午2.54.58.png屏幕快照 2016-07-17 下午2.55.09.png
-
-屏幕快照 2016-07-17 下午2.57.39.png
-
-得到两者的更新方法：
-
-
-屏幕快照 2016-07-17 下午3.00.14.png+=屏幕快照 2016-07-17 下午2.58.34.png
-
-屏幕快照 2016-07-17 下午3.01.01.png屏幕快照 2016-07-17 下午3.01.34.png
-
-训练伪码为：
-
-屏幕快照 2016-07-17 下午3.02.35.png
-
-对应原版C代码片段：
-
-f = 0;
-for (c = 0; c < layer1_size; c++)
-    f += syn0[c + l1] * syn1neg[c + l2];
-if (f > MAX_EXP)
-    g = (label - 1) * alpha;
-else if (f < -MAX_EXP)
-    g = (label - 0) * alpha;
-else
-    g = (label - expTable[(int) ((f + MAX_EXP) * (EXP_TABLE_SIZE / MAX_EXP / 2))]) * alpha;
-for (c = 0; c < layer1_size; c++)
-    neu1e[c] += g * syn1neg[c + l2];
-for (c = 0; c < layer1_size; c++)
-    syn1neg[c + l2] += g * syn0[c + l1];
-syn0对应屏幕快照 2016-07-17 上午10.52.10.png，syn1neg对应屏幕快照 2016-07-17 下午2.37.02.png，f运算后得到q，代码中有优化（后文分解），neu1e对应e。
-
-更多细节
-Huffman树
-上文一直在用二叉树描述Hierarchical Softmax，这是因为我不想仿照大部分tutorial那样一下子拿出Huffman这么具体的细节。初期对word2vec的大框架还没把握住的时候突然看到这些细节的话，人会抓不住重点，造成学习成本无谓的上升。我当时看到有些tutorial第一节就在讲Huffman编码，还以为实现word2vec一定要用Huffman树呢。
-
-其实根本不是的，任何二叉树都可以。Huffman树只是二叉树中具体的一种，特别适合word2vec的训练。
-
-word2vec训练的时候按照词频将每个词语Huffman编码，由于Huffman编码中词频越高的词语对应的编码越短。所以越高频的词语在Hierarchical Softmax过程中经过的二分类节点就越少，整体计算量就更少了。
-
-负采样算法
+#### 负采样算法
 任何采样算法都应该保证频次越高的样本越容易被采样出来。基本的思路是对于长度为1的线段，根据词语的词频将其公平地分配给每个词语：
-
-屏幕快照 2016-07-17 下午3.16.37.png
-
+$len(w)=\frac{counter(w)}{\sum _{u\epsilon D} counter(u)}$
+![avatat](img/35.jpg)
 counter就是w的词频。
-
-于是我们将该线段公平地分配了：
-
-屏幕快照 2016-07-17 下午3.18.09.png
-
-接下来我们只要生成一个0-1之间的随机数，看看落到哪个区间，就能采样到该区间对应的单词了，很公平。
-
-但怎么根据小数找区间呢？速度慢可不行。
-
-word2vec用的是一种查表的方式，将上述线段标上M个“刻度”，刻度之间的间隔是相等的，即1/M：
-
-屏幕快照 2016-07-17 下午3.22.12.png
-
-接着我们就不生成0-1之间的随机数了，我们生成0-M之间的整数，去这个刻度尺上一查就能抽中一个单词了。
-
-在word2vec中，该“刻度尺”对应着table数组。具体实现时，对词频取了0.75次幂：
-
-屏幕快照 2016-07-17 下午4.02.32.png
-
-这个幂实际上是一种“平滑”策略，能够让低频词多一些出场机会，高频词贡献一些出场机会，劫富济贫。
-
-sigmoid函数
-类似的查表方法还有sigmoid函数的计算，因为该函数使用太频繁，而其值仅仅在靠近0的时候才会剧烈变化，远离0的方向很快趋近0和1。所以源码中也采用了“刻度查表”的方法，先算出了很多个刻度对应的函数值，运算中直接查表。这部分对应:
-
-expTable = (real *) malloc((EXP_TABLE_SIZE + 1) * sizeof(real));
-for (i = 0; i < EXP_TABLE_SIZE; i++)
-{
-    expTable[i] = exp((i / (real) EXP_TABLE_SIZE * 2 - 1) * MAX_EXP); // Precompute the exp() table
-    expTable[i] = expTable[i] / (expTable[i] + 1);                   // Precompute f(x) = x / (x + 1)
-}
-多线程
-关于如何多线程并行训练的问题，我没看代码之前也想过。大致就是将语料按照线程数均分，大家分头算，更新参数的过程中做好线程同步的工作。
-
-后来看了原版C代码，原来作者压根就没做线程同步，一个全局的数组，大家都往里面写，万一下标冲突了怎么办？那就让它冲突呗……数组那么大（在text8语料上是一千万），线程那么少，冲突的概率不大吧。
-
-一些开源实现
+接下来我们只要生成一个0-1之间的随机数，看看落到哪个区间，就能采样到该区间对应的单词了，很公平。word2vec用的是一种查表的方式，将上述线段标上M个“刻度”，刻度之间的间隔是相等的，即1/M：接着我们就不生成0-1之间的随机数了，我们生成0-M之间的整数，去这个刻度尺上一查就能抽中一个单词了。在word2vec中，该“刻度尺”对应着table数组。具体实现时，对词频取了0.75次幂：这个幂实际上是一种“平滑”策略，能够让低频词多一些出场机会，高频词贡献一些出场机会，劫富济贫。
