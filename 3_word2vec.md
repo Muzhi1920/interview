@@ -6,11 +6,12 @@
 
 ### CBOW
 给定训练样本，即一个词w和它的上下文Context(w)，Context(w)是输入，w是输出。那么w就是正例，词汇表中其他的词语的就是负例。假设我们通过某种采样方法获得了负例子集NEG(w)。对于正负样本，分别定义一个标签：正样本为1，负样本为0。
-$$L^w(\tilde{w})=\{ 
+$$L^w(\tilde{w})=\left\{ 
 \begin{array}{ll} 
 1 & \tilde{w}=w;\\ 
 0 & \tilde{w} \neq w;
-\end{array}$$
+\end{array}
+\right.$$
 
 
 对于给定正样本（Context(w),w）我们希望最大化
