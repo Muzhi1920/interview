@@ -6,10 +6,18 @@
 
 ### CBOW
 给定训练样本，即一个词w和它的上下文Context(w)，Context(w)是输入，w是输出。那么w就是正例，词汇表中其他的词语的就是负例。假设我们通过某种采样方法获得了负例子集NEG(w)。对于正负样本，分别定义一个标签：正样本为1，负样本为0。
-$$L^w(\tilde{w})=\left \{ \begin{matrix}1,\tilde{w}=w; & \\ 0\tilde{w}\neq w; & \end{matrix} \right.$$
+$$L^w(\tilde{w})=\left\{ 
+\begin{array}{ll} 
+1 & \tilde{w}=w;\\ 
+0 & \tilde{w} \neq w;
+\end{array} 
+\right. $$
+
 
 对于给定正样本（Context(w),w）我们希望最大化
-$$g(w)=\prod _{u{\epsilon {\left \{ w \right \}} \cup NEG(w)}}p(u|Context(w))$$
+$$g(w)=\prod _{
+    u{\epsilon {\left \{ w \right \}} \cup NEG(w)}}
+    p(u|Context(w))$$
 其中，
 $$p(u|Context(w))=[\sigma (X_w^T\theta ^u)]^{L^w(u)}\cdot [1-\sigma(X_w^T\theta ^u)]^{1-L^w(u))}$$
 也就是说，当u是正例时，$\sigma (X_w^T\theta ^u)$越大越好，当u是负例时，$\sigma (X_w^T\theta ^u)$越小越好。因为$\sigma (X_w^T\theta ^u)$ 等于模型预测样本为正例的概率，当答案就是正的时候，我们希望这个概率越大越好，当答案是负的时候，我们希望它越小越好，模型也符合极大似然估计。
