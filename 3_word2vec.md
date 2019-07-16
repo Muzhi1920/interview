@@ -13,7 +13,7 @@ $$L^w(\tilde{w})={\left \{
 \end{array}
 \right.}$$
 
-![](https://latex.codecogs.com/gif.latex?$$L^w(\tilde{w})=\left&space;\{&space;\begin{array}{ll}&space;1&space;&&space;\tilde{w}=w;\\&space;0&space;&&space;\tilde{w}&space;\neq&space;w;&space;\end{array}&space;\right.$$)
+![](https://latex.codecogs.com/gif.latex?L^w(\tilde{w})=\left&space;\{&space;\begin{array}{ll}&space;1&space;&&space;\tilde{w}=w;\\&space;0&space;&&space;\tilde{w}&space;\neq&space;w;&space;\end{array}&space;\right.)
 对于给定正样本（Context(w),w）我们希望最大化
 $$g(w)=\prod _{
     u{\epsilon {\left \{ w \right \}} \cup NEG(w)}}
