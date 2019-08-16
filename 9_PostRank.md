@@ -19,3 +19,7 @@ lambda 越小，多样性越好。
 
 两层Transformer，4个head；最后得到某个位置item的概率。最后计算总体收益。
 
+focal loss：更多关注错分的样本；a调节权重；
+样本权重：
+
+
