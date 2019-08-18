@@ -7,9 +7,10 @@
 res={{}},对nums排序,last=s[0]
 遍历nums：
     if s[i]!=last：
-        last=s[i],size=res.size
+        last=s[i];
+        len=res.size;
     
-    Loop：res.size-size ~j~ res.size次： //如果有重复则赋值后一半，再添加元素；无重复则从头赋值
+    Loop：res.size-len ~j~ res.size次： //如果有重复则赋值后一半，再添加元素；无重复则从头赋值
         res.push_back(s[j])；
         res.back().push_back(s[i])   //对新复制的子集添加新元素
 return res;
@@ -17,14 +18,18 @@ return res;
 
 - 通过转变大小写获得新的字符串求此集合
 ```cpp
-初始化res={""};
-遍历字符串：
-    if是数字：
-        对当前所有子集都添加该数字
-    else if 是字母：
-        下标遍历当前res：
-            res.push(res[j])
-            s[j].push(low)；
-            res.back().push(hegi)
+res={""};
+for(char c:string){
+    int len=res.size;
+    if(s[i]-'a'>=0 && <=9)：
+        for(c:subset):
+            c.push_back(s[i]);
+    else: //是字母
+        for(i in range(len)){ //下标遍历当前res
+            res.push(res[i]);
+            res[i].push(tolower(c));
+            res.back().push(toupper(c));
+        }
+}
 return res;
 ```

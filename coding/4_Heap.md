@@ -31,15 +31,17 @@ while(q):
 构造左右两个最小堆；
 void addNum(int num){
     right_q.push(num)
-    left_q.push(右堆的负top值);right_q.pop;
+    left_q.push(-right_q.top());
+    right_q.pop;
     if right_q.size < left_q.size：
-        right_q.push(左堆的负top值);left_q.pop;
+        right_q.push(-left_q.top());left_q.pop;
 }
 void getMedian(){
     右堆大则返回右堆top，否则(右堆top-左堆top)/2
 }
 //最终保证，两个最小堆。左堆绝对值递增，但实数值是减小的（符合最小堆的定义）；右堆按照最小堆递减，实数值也是递减。
 ```
+
 - 第N个丑数：给定几个数定义为丑数，所有的数都是基于丑数的累乘。
 
 brute force：第n个丑数；每个丑数累乘到之前，取大于dp[n-1]的最小的那个值。
