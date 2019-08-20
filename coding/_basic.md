@@ -65,7 +65,41 @@ typedef struct _LGraph{ // 邻接表，图。邻接链表中存储的是当前�
 ```
 
 
-
+```cpp
+class LRUCache{
+public:
+    LRUCache(int capacity) {
+        cap = capacity;
+    }
+    
+    int get(int key) {
+        auto it = m.find(key);
+        if (it == m.end())//没找到
+            return -1;
+        l.splice(l.begin(), l, it->second);//找到则拼接到l的前端
+        return it->second->second;
+    }
+    
+    void put(int key, int value) {
+        auto it = m.find(key);
+        if (it != m.end()) //找到了
+            l.erase(it->second);//擦除，重新记录
+        l.push_front(make_pair(key, value));//更新新的记录
+        m[key] = l.begin();//保存kv
+        //如果超容则右取弹出，map擦除
+        if (m.size() > cap) {
+            int k = l.rbegin()->first;
+            l.pop_back();
+            m.erase(k);
+        }
+    }
+    
+private:
+    int cap;
+    list<pair<int, int>> l;
+    unordered_map<int, list<pair<int, int>>::iterator> m;
+};
+```
 
 
 
