@@ -12,11 +12,11 @@ str=to_string(val)
 multiset<double> ms(nums.begin(), nums.begin() + k);//维护一个可重复有序的set。
 memset
 //二分函数
-lower_bound( begin,end,num)：//从数组的begin位置到end-1位置二分查找第一个大于或等于num的数字，找到返回该数字的地址，不存在则返回end。通过返回的地址减去起始地址begin,得到找到数字在数组中的下标。
-upper_bound( begin,end,num)：//从数组的begin位置到end-1位置二分查找第一个大于num的数字，找到返回该数字的地址，不存在则返回end。通过返回的地址减去起始地址begin,得到找到数字在数组中的下标。
+lower_bound(begin,end,num)：//从数组的begin位置到end-1位置二分查找第一个大于或等于num的数字，找到返回该数字的地址，不存在则返回end。通过返回的地址减去起始地址begin,得到找到数字在数组中的下标。
+upper_bound(begin,end,num)：//从数组的begin位置到end-1位置二分查找第一个大于num的数字，找到返回该数字的地址，不存在则返回end。通过返回的地址减去起始地址begin,得到找到数字在数组中的下标。
 在从大到小的排序数组中，重载lower_bound()和upper_bound()
-lower_bound( begin,end,num,greater<type>() )://从数组的begin位置到end-1位置二分查找第一个小于或等于num的数字，找到返回该数字的地址，不存在则返回end。通过返回的地址减去起始地址begin,得到找到数字在数组中的下标。
-upper_bound( begin,end,num,greater<type>() )://从数组的begin位置到end-1位置二分查找第一个小于num的数字，找到返回该数字的地址，不存在则返回end。通过返回的地址减去起始地址begin,得到找到数字在数组中的下标。
+lower_bound(begin,end,num,greater<type>() )://从数组的begin位置到end-1位置二分查找第一个小于或等于num的数字，找到返回该数字的地址，不存在则返回end。通过返回的地址减去起始地址begin,得到找到数字在数组中的下标。
+upper_bound(begin,end,num,greater<type>() )://从数组的begin位置到end-1位置二分查找第一个小于num的数字，找到返回该数字的地址，不存在则返回end。通过返回的地址减去起始地址begin,得到找到数字在数组中的下标。
 //建堆
 std::priority queue<int,std::vectot<int>,std::greater<int>> small_heap;  //构造最小堆
 std::priority queue<int,std::vectot<int>,std::less<int>> big_heap;  //构造最大堆    empty();pop();push();top();size()
@@ -46,7 +46,6 @@ typedef struct _ENode{//边：邻接链表
 	int weight;		//权重
 	struct _ENode *next_edge;  //指向节点的下一个边
 }ENode, *PENode;
-
 typedef struct _VNode{//顶点：链接邻边
 	char data;         //顶点信息
 	enum Color color;//颜色
@@ -71,7 +70,6 @@ public:
     LRUCache(int capacity) {
         cap = capacity;
     }
-    
     int get(int key) {
         auto it = m.find(key);
         if (it == m.end())//没找到
@@ -79,24 +77,23 @@ public:
         l.splice(l.begin(), l, it->second);//找到则拼接到l的前端
         return it->second->second;
     }
-    
+    //重新放到头部，如果有则删除；如果空间满则移除尾部
     void put(int key, int value) {
         auto it = m.find(key);
         if (it != m.end()) //找到了
-            l.erase(it->second);//擦除，重新记录
-        l.push_front(make_pair(key, value));//更新新的记录
-        m[key] = l.begin();//保存kv
-        //如果超容则右取弹出，map擦除
+            l.erase(it->second);
+        l.push_front(make_pair(key, value));
+        m[key] = l.begin();
+        
         if (m.size() > cap) {
             int k = l.rbegin()->first;
             l.pop_back();
             m.erase(k);
         }
     }
-    
 private:
     int cap;
-    list<pair<int, int>> l;
+    list<pair<int, int>> l;//可左右端操作
     unordered_map<int, list<pair<int, int>>::iterator> m;
 };
 ```
