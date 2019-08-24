@@ -2,7 +2,6 @@
 面试要点整理
 
 ```cpp
-
 #include <iostream>
 #include <vector>
 #include <string>
@@ -51,10 +50,16 @@ int main() {
             res.push_back(nums[i][j]);
             continue;
         }
+        int tmp=0;
+        while(nums[i][role-3]!=0){
+            tmp+=nums[i][role-3];
+            sort(nums[i].begin(),nums[i].end());
+        }
         res.push_back(nums[i][j]*(role-j-1)+nums[i][j+1]);
+
     }
     for(int i=0;i<C;i++){
-        cout<<res[i];
+        cout<<res[i]<<endl;
     }
     return 0;
 }
