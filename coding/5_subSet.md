@@ -6,12 +6,11 @@
 ```cpp
 res={{}},对nums排序,last=s[0]
 遍历nums：
-    if s[i]!=last：
+    if s[i]!=last
         last=s[i];
-        len=res.size;
-    
-    Loop：res.size-len ~j~ res.size次： //如果有重复则赋值后一半，再添加元素；无重复则从头赋值
-        res.push_back(s[j])；
+        len=res.size();
+    for(int j=res.size()-len;j< res.size();j++) //如果有重复则赋值后一半，再添加元素；无重复则从头赋值
+        res.push_back(s[j]);
         res.back().push_back(s[i])   //对新复制的子集添加新元素
 return res;
 ```
@@ -24,7 +23,7 @@ for(char c:string){
     if(s[i]-'a'>=0 && <=9)：
         for(c:subset):
             c.push_back(s[i]);
-    else: //是字母
+    else: //若是字母
         for(i in range(len)){ //下标遍历当前res
             res.push(res[i]);
             res[i].push(tolower(c));

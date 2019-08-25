@@ -10,14 +10,15 @@ Q3：期间有大的还要替换前面比它小的
 ```cpp
 //双向队列保存当前最大值下标
 deque<int>q;
-遍历nums：
-    if q and q.front==i-k:
+遍历nums{
+    if q and q.front==i-k
         pop_front();
-    while q and nums[i]>q.back():
+    while(q and nums[i]>q.back())
         pop();
-    q(i);
-    如果i-k>=-1：      //说明窗口开始移动，res该存储结果
+    q.push(i);
+    if(i-k>=-1)      //说明窗口开始移动，res该存储结果
         res.push(q.front)
+}
 ```
 - 滑动窗口中位数：
 直观的解法就是每个窗口排序取中位数。借用multiset，可重复的有序集合，mid指针始终指向中间位置；而且中间位置的元素也有技巧去唯一获取。
@@ -26,30 +27,30 @@ multiset<double> ms(nums.begin(), nums.begin() + k);//维护一个可重复有�
 auto mid = next(ms.begin(), k / 2);
 遍历nums：
     res.push(mid+*prev(mid,1-k%2))/2  //K为奇偶?保存当前中位数
-    if i==nums.size():
-        return res
+    if i==nums.size()
+        return res;
     ms.insert(nums[i]);
      //判断新进值和刚出值移动mid指针
-    if *mid > nums[i]：
+    if *mid > nums[i]
         mid--;
-    if *mid >= nums[i-k]:
+    if *mid >= nums[i-k]
         mid++;
     ms.erase(ms.lower_bound(nums[i-k]));
-
 ```
 
 - 两个索引满足下标差和数值差
 ```cpp
-map<long long,int >m; int left; //默认有序map
-遍历nums：
-    if i-left>k:
-        m.erase[nums[left]]
+map<long long,int >m; int left; //默认有序map，保存K个数字
+遍历nums{
+    if(i-left>k)
+        m.erase[nums[left]];
         left++;
-    //当前值当做被减数，对map的Key进行另一个值的二分查找。
-    auto a=m.lower_bound((long long)nums[i]-t)
-    if(a and a-nums[i]<=t)：
-        return true
+    //对map的key二分查找(nums[i]-t)
+    auto a=m.lower_bound((long long)nums[i]-t);
+    if(a and a->first-nums[i]<=t)
+        return true;
     m[nums[i]]=i;
+}
 return false;
 ```
 
@@ -59,61 +60,70 @@ return false;
 Q1：当有重复的时候左更新；不重复的时候窗口长度累加。所以O(N)的遍历即可
 ```cpp
 char c[126]=-1,left=-1;
-遍历nums：
-    left=max(c[nums[i],left]); //不是-1则重复,取最大更新left。
+遍历nums{
+    left=max(c[nums[i],left]); //不是-1则重复,重新计算最大长度
     c[nums[i]]=i;
     res=max(res,i-left);
+    }
 return res;
 ```
 
 - 最小包含（覆盖）子串
-s,t
+
 ```cpp
+s,t
 char c[126]=0;//对t遍历统计c各字符次数
-遍历nums：
+遍历nums{
     c[nums[i]]--;
     if c[nums[i]]>=0：//说明属于子串t的字符
         cnt++;
-    while cnt==t.size： //子串可构成t；然后左侧右移取最小窗口
+    while cnt==t.size{ //子串可构成t；然后左侧右移取最小窗口
         minLen=min(minLen,i-left+1);
         res=res.substr(left,minLen);
-        if(++c[nums[left]]>0):  //从左往右不相关加上，left在子串t的第一个字符
+        c[nums[left]]++; //从左往右不相关加上
+        if(c[nums[left]]>0) //如果加的是相关字符则跳出
             cnt--;
-        left++；
+        left++;
+    }
+}
 return res;
 ```
-- 替换K次字符以后最长的重复字符构成的子串长度
+- 替换K次字符后最长的重复字符构成的子串长度
 ```cpp
 int count,res,left=0;
-遍历c:nums：
+遍历c:nums{
     map[c]++;
     count=max(count,map[c]);
-    while i-left+1 > (count+k)  //说明中间有多余：
+    while(i-left+1 > (count+k)) //达到了最大长度，左边界右移
         map[left]--;
         left++;
     res=max(res,i-left+1);
+}
 ```
 - 字符串包含另一子串的排列
 ```cpp
-//1)遍历t：保存s1中字符次数
-遍历s2：
-    m[s2[i]]--;
-    if(m[s2[i]]<0) //说明没匹配对，左边再加上，都加上后从头开始计
-        while(++m[left]!=0)
-            left++
-    else if i-left+1==s1.size()//窗口大小==t长度相同则匹配到了最后一个字符
-        return true
-return t.szie()==0
+遍历t:
+    m[t[i]]++;//保存t中字符次数
+遍历s：
+    m[s[i]]--;
+    if(m[s[i]]<0) //说明此时没匹配对
+        while(++m[left]!=0)//则对之前匹配对的再补上+1
+            left++;
+    else if (i-left+1==t.size())//窗口大小==t长度相同则匹配到了最后一个字符
+        return true;
+return t.szie()==0;
 ```
 - 长度最小的子数组。和相同（双指针）
+>>一直累加，当超过目标值时左边移动
 ```cpp
-// 一个窗口移动到头得到最小的符合条件的窗口大小
-遍历nums：
+遍历nums{
     sum+=nums[i];
-    while left<=i and sum>=Target：
+    while left<=i and sum>=Target{
         res=min(res,i-left+1);
         sum-=num[left];
         left++;
+    }
+}
 return res==INT_MAX?0:res;
 ```
 
