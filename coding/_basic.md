@@ -39,31 +39,10 @@ struct TrieNode {
                 a=NULL;
         }
 };
-//图，边，节点
-typedef struct _ENode{//边：邻接链表
-	int ivex;       //该边所指向的顶点的位置
-	int source;		//前节点
-	int weight;		//权重
-	struct _ENode *next_edge;  //指向节点的下一个边
-}ENode, *PENode;
-typedef struct _VNode{//顶点：链接邻边
-	char data;         //顶点信息
-	enum Color color;//颜色
-	int pre;		//前驱结点
-	int category;  //是否已遍历
-	int d;	//源节点到当前节点的距离
-	int f;  //dfs中 d 开始时间，f 结束时间。
-	ENode *first_edge; //邻接链表头结点
-}
-typedef struct _LGraph{ // 邻接表，图。邻接链表中存储的是当前节点相连的点
-	int vexnum;             // 图的顶点的数目
-	int edgnum;             // 图的边的数目
-	VNode *vexs[SIZE];   //节点数组编号：0~N-1
-}LGraph;
-
 ```
 
-
+- LRU缓存实现
+>>//构造List存储pair<k,v>;//构造Map存储<k,List->pointer>
 ```cpp
 class LRUCache{
 public:
@@ -96,7 +75,5 @@ private:
     list<pair<int, int>> l;//可左右端操作
     unordered_map<int, list<pair<int, int>>::iterator> m;
 };
+
 ```
-
-
-
