@@ -1,6 +1,13 @@
 # word2vec
 [《word2vec中的数学原理.pdf》](https://github.com/yuyinxiao/interview/blob/master/doc/word2vec-中的数学原理详解.pdf) 
 [网页版笔记](http://www.hankcs.com/nlp/word2vec.html)
+
+## 网络结构
+![avatar](img/w2v.jpg)
+![avatar](img/sg.jpg)
+Word2Vec模型是一个超级大的神经网络（权重矩阵规模非常大）。10000个单词的词汇表，如果嵌入300维的词向量，那么输入-隐层权重矩阵和隐层-输出层的权重矩阵都会有 10000 x 300 = 300万个权重，在如此庞大的神经网络中进行梯度下降是相当慢的。
+
+
 ## Negative Sampling
 对于机器学习中的分类任务，在训练的时候不但要给正例，还要给负例。对于Hierarchical Softmax，负例是二叉树的其他路径。对于Negative Sampling，负例是随机挑选出来的。Negative Sampling能**提高速度、改进模型质量。**
 
