@@ -16,6 +16,7 @@
 - (len(s1)-len(replace(s2,p,'')))/len(p)：用字符串p换为空，得到缺失长度/p的长度，计算p字符串出现的次数
 - upper，lower大小写转换
 - replace(s,p,q)：对字符串s的p字串替换为q
+- row_number() over (partition by id order by salary desc) rank
 - ```sql
   case c1
       when condition1 then result1
@@ -44,4 +45,15 @@
 - exists型：把外层取出来拿到内层sql测试，成立则该行取出
 - ```sql
   SELECT c.cat_id,c.cat_name FROM category c WHERE EXISTS (SELECT 1 FROM goods g WHERE g.cat_id = c.cat_id);
-- 
+## join
+```sql
+SELECT dname,sum(salary)as s from (
+    SELECT a.*,b.salary from (
+        SELECT n.id,n.name,d.dname from 
+        ntable n ,dtable d 
+        where n.dpid = d.did
+        )a,stable b 
+    where a.id = b.id
+    )c 
+GROUP BY dname ORDER BY s desc;
+```
