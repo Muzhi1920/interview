@@ -5,7 +5,7 @@
 - 每个节点可以有零个或多个输入，但只有一个输出。网络中的节点表示对象（张量和运算操作），边表示运算操作之间流动的张量。
 
 ---
-## 数据类型：常量、变量、占位符
+## 一、数据类型：常量、变量、占位符
 ### 常量
 常量是其值不能改变的张量；常量存储在计算图的定义中
 ```python
@@ -42,7 +42,7 @@ with tf.Session() as sess:
     print(sess.run(y,feed_dict={x:x_data}))
 ```
 
-## 矩阵运算
+## 二、矩阵运算
 ```python
 #创建矩阵
 W=tf.Variable(tf.random_uniform([m,n],10))
@@ -51,7 +51,7 @@ tf.matmul(W,X).eval #取值
 tf.add(w1,w2)
 ```
 
-## Tensorflow的重要API
+## 三、Tensorflow的重要API
 ### 损失函数与优化器
 ```python
 #平方损失
@@ -71,7 +71,6 @@ loss+=l2_reg
 preds = array_ops.where(math_ops.equal(labels, 1), predictions, 1. - predictions)
 losses = -alpha * (1. - preds) ** gamma * math_ops.log(preds + epsilon)
 
-
 tf.summary_scalar('loss')
 
 train_step=optimizer=tf.train.AdamOptimizer.minimize(loss)
@@ -89,7 +88,7 @@ tf.nn.softmax(x)    #多分类中表示一个类的概率
 ```
 
 
-## Tenforflow实现线性回归
+## 四、Tenforflow实现线性回归
 ```python
 
 #使用numpy生成200个随机点
@@ -127,3 +126,63 @@ with tf.Session() as sess:
     #获得预测值
     prediction_value=sess.run(prediction,feed_dict={x:x_data})
 ```
+
+## 五、estimator实现
+
+- Transformer.py：完成Transformer模型构建
+- Evaluator.py：该类集成了训练参数，和各子模型。搭建transformer+DNN
+- main.py：训练入口
+
+
+```python
+def model_fn(features, labels, mode):
+    params = {
+        "batch_size": FLAGS.batch_size,
+        "feature_dim": FLAGS.feature_dim,
+        "length": FLAGS.length,
+        "l2_reg": FLAGS.l2_reg,
+        "learning_rate": FLAGS.learning_rate,
+        "latent_layer": FLAGS.latent_layer,
+        "cell_dim": FLAGS.cell_dim,
+        "optimizer": FLAGS.optimizer,
+        "dropout_keep_prob_p": FLAGS.dropout_keep_prob_p,
+        "sequence_encoder": FLAGS.sequence_encoder
+    }
+    model = Evaluator(features,
+                      labels,
+                      mode,
+                      params)
+    return model.build_graph()
+def main():
+    run_config = tf.estimator.RunConfig(save_summary_steps=FLAGS.batch_size * 10,keep_checkpoint_max=3)
+    classifier = tf.estimator.Estimator(
+        model_fn=model_fn,
+        model_dir=FLAGS.checkpoint_path,
+        config=run_config
+    )
+
+    if FLAGS.mode == "train_and_eval":
+        train_spec = tf.estimator.TrainSpec(
+            input_fn=lambda: _input_fn(FLAGS.train_path, FLAGS.batch_size, epochs=FLAGS.epochs, prefetch=True))
+
+        eval_spec = tf.estimator.EvalSpec(
+            input_fn=lambda: _input_fn(FLAGS.test_path, FLAGS.batch_size, epochs=FLAGS.epochs, prefetch=False),
+            throttle_secs=60
+        )
+        train, val = tf.estimator.train_and_evaluate(
+            classifier,
+            train_spec,
+            eval_spec)
+       
+    elif FLAGS.mode == "eval":
+        print("checkpoint_path {}".format(FLAGS.checkpoint_path))
+        evaluate_result = classifier.evaluate(
+            input_fn=lambda: _input_fn(FLAGS.test_path, FLAGS.batch_size, epochs=FLAGS.epochs, prefetch=False),
+            steps=2,
+            checkpoint_path=FLAGS.checkpoint_path,
+        )
+        for key in evaluate_result:
+            print("   {}, was: {}".format(key, evaluate_result[key]))
+
+```
+

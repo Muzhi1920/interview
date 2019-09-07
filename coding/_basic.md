@@ -107,3 +107,15 @@ void QuickSort(int array[], int start, int last){
 }
 
 ```
+
+>> MR实现矩阵相乘
+
+![avatar](img/MRMatrix.png)
+
+### 生成随机数
+```cpp
+while(1){
+    x = a*rand_a()+rand_a();
+    if x < N{  //N=max(N%b==0,N<-[0,a^2+a])
+        return x%b;
+```
