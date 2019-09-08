@@ -1,5 +1,33 @@
 # SQL基础
 
+>>调用Python脚本
+```sql
+ADD FILE $curdir/user_doc_generator_filter_session.py;
+FROM(
+    SELECT
+        eventid,
+        uid,
+        fid,
+        weight_info
+    FROM
+        engine_with_pingback
+    WHERE
+        dt = '$common_cur_dt'
+        AND hour='$common_cur_hour'
+        AND method='baseline'
+        cluster by eventid
+        ) b
+    INSERT OVERWRITE DIRECTORY '$cur_hdata_path'
+    ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t'
+    REDUCE
+        eventid, uid, fid,weight_info
+    USING
+        'python user_doc_generator_filter_session.py user_doc_analyzer_reducer'
+    AS
+        uid, eventid, fid, weight_info
+```
+---
+
 ## SQL调优
   1. 创建索引；避免索引上引用计算；预编译查询；临时表暂存（减少阻塞提高并发性能）；避免使用having（分组后过滤，开销很大）
   2. 分区dt,strategy统计，用样本估计整体；
@@ -55,6 +83,7 @@
 - exists型：把外层取出来拿到内层sql测试，成立则该行取出
 - ```sql
   SELECT c.cat_id,c.cat_name FROM category c WHERE EXISTS (SELECT 1 FROM goods g WHERE g.cat_id = c.cat_id);
+
 ## join
 ```sql
 SELECT dname,sum(salary)as s from (
@@ -66,8 +95,6 @@ SELECT dname,sum(salary)as s from (
         where a.id = b.id
     )c GROUP BY dname ORDER BY s desc;
 ```
-
-
 
 ## 补充
 ```sql
