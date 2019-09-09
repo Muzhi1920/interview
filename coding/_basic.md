@@ -9,27 +9,24 @@
 val=atoi(s.substr(0, k))
 str=to_string(val)
 //数据结构
-multiset<double> ms(nums.begin(), nums.begin() + k);//维护一个可重复有序的set。
-memset
+multiset<double> ms(nums.begin(), nums.begin() + k);//维护一个可重复有序集合。
 //二分函数
 lower_bound(begin,end,num)：//从数组的begin位置到end-1位置二分查找第一个大于或等于num的数字，找到返回该数字的地址，不存在则返回end。通过返回的地址减去起始地址begin,得到找到数字在数组中的下标。
 upper_bound(begin,end,num)：//从数组的begin位置到end-1位置二分查找第一个大于num的数字，找到返回该数字的地址，不存在则返回end。通过返回的地址减去起始地址begin,得到找到数字在数组中的下标。
 在从大到小的排序数组中，重载lower_bound()和upper_bound()
-lower_bound(begin,end,num,greater<type>() )://从数组的begin位置到end-1位置二分查找第一个小于或等于num的数字，找到返回该数字的地址，不存在则返回end。通过返回的地址减去起始地址begin,得到找到数字在数组中的下标。
-upper_bound(begin,end,num,greater<type>() )://从数组的begin位置到end-1位置二分查找第一个小于num的数字，找到返回该数字的地址，不存在则返回end。通过返回的地址减去起始地址begin,得到找到数字在数组中的下标。
+lower_bound(begin,end,num,greater<type>())://从数组的begin位置到end-1位置二分查找第一个小于或等于num的数字，找到返回该数字的地址，不存在则返回end。通过返回的地址减去起始地址begin,得到找到数字在数组中的下标。
+upper_bound(begin,end,num,greater<type>())://从数组的begin位置到end-1位置二分查找第一个小于num的数字，找到返回该数字的地址，不存在则返回end。通过返回的地址减去起始地址begin,得到找到数字在数组中的下标。
 //堆 empty();pop();push();top();size()
 priority queue<int,vectot<int>,greater<int>>small_heap;  //构造最小堆
 priority queue<int,vectot<int>,less<int>>big_heap;  //构造最大堆
 priority_queue<int,vector<int>>p;//默认最大堆。
 //插入logK，n个；logk为高度
-
 ```
-
 
 ## 复杂数据结构构造器
 
+- Trie树
 ```cpp
-//Trie树
 struct TrieNode {
     public:
         TrieNode *child[26];
@@ -80,32 +77,27 @@ private:
 
 - 快排
 >>传说中的实习面试必考
+i为分割节点，左边i+1个数就是最小的i+1个数
 ```cpp
-void QuickSort(int array[], int start, int last){
-    int i = start;
-    int j = last;
-    int temp = array[i];
-    if (i < j){
+int[] QuickSort(int nums[], int start, int end){
+    if (start < end){
+        int i = start;
+        int j = last;
+        int base = numx[i];
         while (i < j){
-            while (i < j &&  array[j]>=temp )
+            while (i < j &&  nums[j]>=base)
                 j--;
-            if (i < j){
-                array[i] = array[j];
+            nums[i] = nums[j];
+            while (i < j &&  nums[i]<=base)
                 i++;
-            }
-            while (i < j && temp > array[i])
-                i++;
-            if (i < j){
-                array[j] = array[i];
-                j--;
-            }              
+            nums[j] = nums[i];
         }
-        array[i] = temp;
-        QuickSort(array, start, i - 1);
-        QuickSort(array, i + 1, last);
+        nums[i] = base;
+        QuickSort(nums, start, i - 1);
+        QuickSort(nums, i + 1, last);
     }
+    return nums;
 }
-
 ```
 
 >> MR实现矩阵相乘
@@ -119,3 +111,4 @@ while(1){
     if x < N{  //N=max(N%b==0,N<-[0,a^2+a])
         return x%b;
 ```
+
