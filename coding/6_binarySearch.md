@@ -2,19 +2,30 @@
 使用二分的前提是给定链表或数组是有序的；在此基础上的变形比如排序树组旋转；两个有序数组的中位数
 
 ---
-- 旋转数组的搜索（含重复元素）
+<!-- TOC -->
+
+- [二分查找](#二分查找)
+    - [旋转数组的搜索target](#旋转数组的搜索target)
+    - [旋转数组找min](#旋转数组找min)
+    - [寻找两个有序数组中位数](#寻找两个有序数组中位数)
+    - [逆序数](#逆序数)
+
+<!-- /TOC -->
+
+## 旋转数组的搜索target
+>>含重复元素
 ```cpp
-while left <= right
-    if num[mid]==target
+while(left <= right){
+    if(num[mid]==target)
         return true;
-    else if mid < right{
-        if mid < target <= right
+    else if (num[mid] < num[right]){
+        if(num[mid] < target <= num[right])
             left=mid+1;
         else
             right=mid-1;
     }
-    else if mid > right{
-        if left <= target < mid
+    else if(num[mid] > right){
+        if(num[left] <= target < num[mid])
             right=mid-1;
         else
             left=mid+1;
@@ -24,80 +35,78 @@ while left <= right
 return false;
 ```
 
-- 旋转数组找最小值（含重复元素）
+## 旋转数组找min
+>>（含重复元素）
 ```cpp
-while (left < right - 1)
-    if mid > left //说明中值在左侧递增内
-        res=min(res,left);
+while (left < right-1){
+    if(num[mid] > num[left]) //说明中值在左侧递增内,与左侧值比
+        res=min(res,num[left]);
         left=mid+1;
-    else if mid < left //说明在右侧递增区间内
-        res=min(res,right);
+    else if(num[mid] < num[left]) //说明在右侧递增区间内，与右侧值比
+        res=min(res,num[right]);
         right=mid;
     else
         left++;
-return min(left,right,res);//由于有重复元素故若是重复元素处切分则最终需判断一下
+}
+return min(num[left],num[right],num[res]);//若是重复元素处切分
 ```
 
-- 寻找两个有序数组中位数
 
+## 寻找两个有序数组中位数
 ```cpp
-left=(m+n+1)/2;
-right=(m+n+2)/2
-mid=(nums[left]+nums[right])/2
-//问题转为[find(nums1, 0, nums2, 0, left) + find(nums1, 0, nums2, 0, right)] / 2.0
-
-int find(nums1,i,nums2,j,k) //递归
-    if (i==nums1,size()-1) return nums2[j+k-1];
-    if (j==nums2.size()-1) return nums1[i+k-1];
-    if k==1
-        return min(nums1[i],nums2[j])
-    m1 = nums1[i + k / 2 - 1] or INT_MAX; //获取nums1,nums2的中位数如果存在
-    m2 = nums2[j + k / 2 - 1] or INT_MAX;
-    if m1 < m2:
+double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
+    int m = nums1.size(), n = nums2.size();
+    int left = (m + n + 1) / 2, right = (m + n + 2) / 2;
+    return (findKth(nums1, 0, nums2, 0, left) + findKth(nums1, 0, nums2, 0, right)) / 2.0;
+}
+int findKth(vector<int>& nums1, int i, vector<int>& nums2, int j, int k) {
+    if (i >= nums1.size()) 
+        return nums2[j + k - 1];
+    if (j >= nums2.size()) 
+        return nums1[i + k - 1];
+    if (k == 1) 
+        return min(nums1[i], nums2[j]);
+        
+    int m1 = (i + k / 2 - 1 < nums1.size()) ? nums1[i + k / 2 - 1] : INT_MAX;
+    int m2 = (j + k / 2 - 1 < nums2.size()) ? nums2[j + k / 2 - 1] : INT_MAX;
+        
+    if (m1 < m2) {
         return findKth(nums1, i + k / 2, nums2, j, k - k / 2);
-    else:
+    } else {
         return findKth(nums1, i, nums2, j + k / 2, k - k / 2);
-
-```
-- 查找插入位置
-```cpp
-二分初始化index = -1
-    取中值；
-    if 相等：
-        index=mid；
-    else if target < mid:
-        if mid==0 or target > left：
-            index=mid;
-        end=mid - 1;
-    else if target > mid
-        if mid==size-1 or target<right
-            index=mid+1;
-        begin=mid + 1;
-return index;
+    }
+}
 ```
 
-- 逆序数
+## 逆序数
 3-2-4-1
 ```cpp
-对数组nums倒序构造vector  [1-4-2-3]
-遍历：
+//对数组nums倒序构造vector
+vector<Node*>node;
+for(int i=nums.size()-1;i>=0;i--;){
+    node.push_back(new Node(nums[i]));
+}
+for(int i=0;i < node.size();i++;){
     count_small=0;
     BST_insert(node[0],node[i],count_small); //递归
-    count_small入tmp
-倒序保存tmp的count_small到res中，返回
+    tmp.push_back(count_small);
+}
+return vector<int>(tmp.rbegin(),tmp.rend());
 /*****************************************************/
-二叉搜索树的插入操作：
-BST_insert(node(0),node[i],count_small)
-    if 插入的值小于<根：
-        根->count++;
-        if(根->left)
-            递归插入左
-        else:
-            根->left=insert_node
-    else:
-        count_small+=根的count+1  //count_small记录比待插入节点的小个数，因为是倒序插入的
-        if(根->right)
-            递归插入右
+//二叉搜索树的插入操作：
+BST_insert(root,node,count_small){
+    if(node->val<root->val){
+        root->count++;
+        if(root->left)
+            BST_insert(root->left,node,count_small);
         else
-            根->right=insert_node
+            root->left=node;
+    }else{
+        count_small+=(root->count+1);//count_small记录比待插入节点的小个数，因为是倒序插入的
+        if(root->right)
+            BST_insert(root->right,node,count_small);
+        else
+            root->right=node;
+    }
+}
 ```
