@@ -2,6 +2,20 @@
 有的一面会问数据结构与算法的基础：线性表，堆，栈，队列，树，图定义，最短路径算法等等
 
 ---
+<!-- TOC -->
+
+- [数据结构与算法](#数据结构与算法)
+    - [常用STL函数与数据结构](#常用stl函数与数据结构)
+    - [复杂数据结构构造器](#复杂数据结构构造器)
+        - [Trie树](#trie树)
+        - [LRU缓存实现](#lru缓存实现)
+        - [快排](#快排)
+        - [MR实现矩阵相乘](#mr实现矩阵相乘)
+        - [生成随机数](#生成随机数)
+        - [计算器](#计算器)
+        - [KMP](#kmp)
+
+<!-- /TOC -->
 
 ## 常用STL函数与数据结构
 ```cpp
@@ -25,7 +39,7 @@ priority_queue<int,vector<int>>p;//默认最大堆。
 
 ## 复杂数据结构构造器
 
-- Trie树
+### Trie树
 ```cpp
 struct TrieNode {
     public:
@@ -38,7 +52,7 @@ struct TrieNode {
 };
 ```
 
-- LRU缓存实现
+### LRU缓存实现
 >>//构造List存储pair<k,v>;//构造Map存储<k,List->pointer>
 ```cpp
 class LRUCache{
@@ -75,7 +89,7 @@ private:
 
 ```
 
-- 快排
+### 快排
 >>传说中的实习面试必考
 i为分割节点，左边i+1个数就是最小的i+1个数
 ```cpp
@@ -100,7 +114,7 @@ int[] QuickSort(int nums[], int start, int end){
 }
 ```
 
->> MR实现矩阵相乘
+### MR实现矩阵相乘
 
 ![avatar](img/MRMatrix.png)
 
@@ -112,3 +126,63 @@ while(1){
         return x%b;
 ```
 
+### 计算器
+初始op为+，保存连续的两个运算符op,c：先结算op；然后判断当c是+-时将中间结果累加到res。
+```cpp
+char op = '+';
+for(int i=0;i < n;i++){
+    char c=s[i];
+    //累计当前数
+    if(c>='0' && c<='9'){
+        num=num*10+c-'0';
+    }
+    if (c == '+' || c == '-' || c == '*' || c == '/' || i == n - 1){
+        //计算中间结果
+        switch(op):{
+            case '+': curRes += num; break;
+            case '-': curRes -= num; break;
+            case '*': curRes *= num; break;
+            case '/': curRes /= num; break;
+        }
+        //结算本次运算符
+        if (c == '+' || c == '-' || i == n - 1) {
+            res += curRes;
+            curRes = 0;
+        }
+        //保存本次运算符
+        op = c;
+        num = 0;
+    }
+return res;
+```
+
+
+
+### KMP
+>>字符串匹配算法
+```cpp
+void KMP(string ss, string tmp, vector< int > f) {
+    int n = ss.size(), m = tmp.size();
+    process(temp, f); //预处理得到失配表
+    int j = 0; //j表示当前模版串的待匹配位置
+    for(int i = 0; i < n; ++i) {
+        while(j && ss[i] != tmp[j]) 
+            j = f[j]; //不停的转移，直到可以匹配或者走到0
+        if(ss[i] == tmp[j])
+            j++; //如果相等，模版串中待匹配位置可以移一位了。
+        if(j == m)
+            cout<< i - m + 1;
+    }
+}
+//计算失配表
+void process(string* tmp, vector< int > f) {
+    int n = tmp.size();
+    f[0] = f[1] = 0; //边界
+    for(int i = 1; i < n; ++i) {
+        int j = f[i];
+        while(j && tmp[i] != tmp[j])
+            j = f[j]; //一旦回到1，表明窗口大小为0了，只能回到最初的字符
+        f[i + 1] = tmp[i] == tmp[j] ? j + 1: 0;
+    }
+}
+```
