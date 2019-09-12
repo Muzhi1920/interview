@@ -50,11 +50,7 @@ cd ..
 ls -la
 7. 在根目录下创建一个itcast的文件夹
 mkdir /itcast
-8. 在/itcast目录下创建src和WebRoot两个文件夹
-分别创建：mkdir /itcast/src     mkdir /itcast/WebRoot         同时创建：mkdir /itcast/{src,WebRoot}
-进入到/itcast目录，在该目录下创建.classpath和README文件
-分别创建：touch .classpath      touch README                     同时创建：touch {.classpath,README}
-9. 查看/itcast目录下面的所有文件
+1. 查看/itcast目录下面的所有文件
 ls -la
 10. 在/itcast目录下面创建一个test.txt文件,同时写入内容"this is test"
 echo "this is test" > test.txt
@@ -133,7 +129,7 @@ chmod a=wx c.txt
 chmod -R a+r *
 13. 将a.txt的用户拥有者设为users,组的拥有者设为jessie:
 chown users:jessie a.txt
-14. 将当前目录下的所有文件与子目录的用户的使用者为lamport,组拥有者皆设为users，
+14. 将当前目录下的所有文件与子目录的用户的使用者为lamport,组拥有者皆设为users
 chown -R lamport:users *
 15. 将所有的java语言程式拷贝至finished子目录中:
 cp *.java finished
