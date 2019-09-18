@@ -1,3 +1,4 @@
+<a id="markdown-数据结构与算法" name="数据结构与算法"></a>
 # 数据结构与算法
 有的一面会问数据结构与算法的基础：线性表，堆，栈，队列，树，图定义，最短路径算法等等
 
@@ -5,31 +6,36 @@
 <!-- TOC -->
 
 - [数据结构与算法](#数据结构与算法)
-    - [常用STL函数与数据结构](#常用stl函数与数据结构)
-    - [复杂数据结构构造器](#复杂数据结构构造器)
-        - [Trie树](#trie树)
-        - [LRU缓存实现](#lru缓存实现)
-        - [快排](#快排)
-        - [MR实现矩阵相乘](#mr实现矩阵相乘)
-        - [生成随机数](#生成随机数)
-        - [计算器](#计算器)
-        - [KMP](#kmp)
+  - [常用STL函数与数据结构](#常用stl函数与数据结构)
+  - [复杂数据结构构造器](#复杂数据结构构造器)
+    - [Trie树](#trie树)
+    - [LRU缓存实现](#lru缓存实现)
+    - [快排](#快排)
+    - [MR实现矩阵相乘](#mr实现矩阵相乘)
+    - [生成随机数](#生成随机数)
+    - [计算器](#计算器)
+    - [KMP](#kmp)
 
 <!-- /TOC -->
 
+<a id="markdown-常用stl函数与数据结构" name="常用stl函数与数据结构"></a>
 ## 常用STL函数与数据结构
 ```cpp
+//字符串
+istringstream is(s);
+getline(is,t,' ');//迭代返回单词
+
 //字符与数字
 val=atoi(s.substr(0, k))
 str=to_string(val)
+
 //数据结构
 multiset<double> ms(nums.begin(), nums.begin() + k);//维护一个可重复有序集合。
+
 //二分函数
-lower_bound(begin,end,num)：//从数组的begin位置到end-1位置二分查找第一个大于或等于num的数字，找到返回该数字的地址，不存在则返回end。通过返回的地址减去起始地址begin,得到找到数字在数组中的下标。
-upper_bound(begin,end,num)：//从数组的begin位置到end-1位置二分查找第一个大于num的数字，找到返回该数字的地址，不存在则返回end。通过返回的地址减去起始地址begin,得到找到数字在数组中的下标。
-在从大到小的排序数组中，重载lower_bound()和upper_bound()
-lower_bound(begin,end,num,greater<type>())://从数组的begin位置到end-1位置二分查找第一个小于或等于num的数字，找到返回该数字的地址，不存在则返回end。通过返回的地址减去起始地址begin,得到找到数字在数组中的下标。
-upper_bound(begin,end,num,greater<type>())://从数组的begin位置到end-1位置二分查找第一个小于num的数字，找到返回该数字的地址，不存在则返回end。通过返回的地址减去起始地址begin,得到找到数字在数组中的下标。
+lower_bound(num.begin(),num.end(),num)：//二分查找第一个大于或等于num的数字，找到返回该数字的地址，不存在则返回end。通过返回的地址减去起始地址begin,得到找到数字在数组中的下标。
+upper_bound(num.begin(),num.end(),num)：//从数组的begin位置到end-1位置二分查找第一个大于num的数字，
+
 //堆 empty();pop();push();top();size()
 priority queue<int,vectot<int>,greater<int>>small_heap;  //构造最小堆
 priority queue<int,vectot<int>,less<int>>big_heap;  //构造最大堆
@@ -37,8 +43,10 @@ priority_queue<int,vector<int>>p;//默认最大堆。
 //插入logK，n个；logk为高度
 ```
 
+<a id="markdown-复杂数据结构构造器" name="复杂数据结构构造器"></a>
 ## 复杂数据结构构造器
 
+<a id="markdown-trie树" name="trie树"></a>
 ### Trie树
 ```cpp
 struct TrieNode {
@@ -52,6 +60,7 @@ struct TrieNode {
 };
 ```
 
+<a id="markdown-lru缓存实现" name="lru缓存实现"></a>
 ### LRU缓存实现
 >>//构造List存储pair<k,v>;//构造Map存储<k,List->pointer>
 ```cpp
@@ -89,6 +98,7 @@ private:
 
 ```
 
+<a id="markdown-快排" name="快排"></a>
 ### 快排
 >>传说中的实习面试必考
 i为分割节点，左边i+1个数就是最小的i+1个数
@@ -97,7 +107,7 @@ int[] QuickSort(int nums[], int start, int end){
     if (start < end){
         int i = start;
         int j = last;
-        int base = numx[i];
+        int base = nums[i];
         while (i < j){
             while (i < j &&  nums[j]>=base)
                 j--;
@@ -114,11 +124,14 @@ int[] QuickSort(int nums[], int start, int end){
 }
 ```
 
+<a id="markdown-mr实现矩阵相乘" name="mr实现矩阵相乘"></a>
 ### MR实现矩阵相乘
 
 ![avatar](img/MRMatrix.png)
 
+<a id="markdown-生成随机数" name="生成随机数"></a>
 ### 生成随机数
+![](img/rand.png)
 ```cpp
 while(1){
     x = a*rand_a()+rand_a();
@@ -126,38 +139,39 @@ while(1){
         return x%b;
 ```
 
+<a id="markdown-计算器" name="计算器"></a>
 ### 计算器
 初始op为+，保存连续的两个运算符op,c：先结算op；然后判断当c是+-时将中间结果累加到res。
 ```cpp
+//25x4x3+20x3
 char op = '+';
 for(int i=0;i < n;i++){
     char c=s[i];
-    //累计当前数
+    //当前数
     if(c>='0' && c<='9'){
         num=num*10+c-'0';
     }
     if (c == '+' || c == '-' || c == '*' || c == '/' || i == n - 1){
-        //计算中间结果
+        //当前乘除的子结果
         switch(op):{
             case '+': curRes += num; break;
             case '-': curRes -= num; break;
             case '*': curRes *= num; break;
             case '/': curRes /= num; break;
         }
-        //结算本次运算符
+        //子表达式结果累加到res
         if (c == '+' || c == '-' || i == n - 1) {
             res += curRes;
             curRes = 0;
         }
-        //保存本次运算符
+        //保留本次运算符
         op = c;
         num = 0;
     }
 return res;
 ```
 
-
-
+<a id="markdown-kmp" name="kmp"></a>
 ### KMP
 >>字符串匹配算法
 ```cpp
