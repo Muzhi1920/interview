@@ -5,9 +5,10 @@
 <!-- TOC -->
 
 - [子集问题](#子集问题)
-  - [对数组取子集](#对数组取子集)
-  - [对字符串取子集](#对字符串取子集)
-  - [移除K个数字使得值更小](#移除k个数字使得值更小)
+    - [对数组取子集](#对数组取子集)
+    - [对字符串取子集](#对字符串取子集)
+    - [移除K个数字使得值更小](#移除k个数字使得值更小)
+    - [最长上升子序列](#最长上升子序列)
 
 <!-- /TOC -->
 
@@ -63,4 +64,16 @@ for (char c : num) {
 while (res.size() && k--) 
     res.pop_back();
 return res.empty() ? "0" : res;
+```
+
+## 最长上升子序列
+```cpp
+stack ss{nums[0]};
+for(int num:nums)
+    auto it = lower_bound(ss.begin(), ss.end(),num);//二分查找该值
+    if (it == ss.end())
+        ss.push(num);
+    else 
+        *it = num;//替换该值
+return ss.size();
 ```
