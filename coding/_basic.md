@@ -1,24 +1,28 @@
 <!-- TOC -->
 
 - [数据结构与算法](#数据结构与算法)
-    - [常用STL函数与数据结构](#常用stl函数与数据结构)
-    - [复杂数据结构构造器](#复杂数据结构构造器)
-        - [Trie树](#trie树)
-        - [LRU缓存实现](#lru缓存实现)
-        - [快排](#快排)
-        - [MR实现矩阵相乘](#mr实现矩阵相乘)
-        - [生成随机数](#生成随机数)
-        - [计算器](#计算器)
-        - [KMP](#kmp)
+  - [常用STL函数与数据结构](#常用stl函数与数据结构)
+  - [复杂数据结构构造器](#复杂数据结构构造器)
+    - [Trie树](#trie树)
+    - [LRU缓存实现](#lru缓存实现)
+    - [快排](#快排)
+    - [MR实现矩阵相乘](#mr实现矩阵相乘)
+    - [生成随机数](#生成随机数)
+    - [计算器](#计算器)
+    - [KMP](#kmp)
 
 <!-- /TOC -->
 
+<a id="markdown-数据结构与算法" name="数据结构与算法"></a>
 # 数据结构与算法
 有的一面会问数据结构与算法的基础：线性表，堆，栈，队列，树，图定义，最短路径算法等等
 
 ---
 
+
+<a id="markdown-常用stl函数与数据结构" name="常用stl函数与数据结构"></a>
 ## 常用STL函数与数据结构
+
 ```cpp
 //字符串
 istringstream is(s);
@@ -42,9 +46,12 @@ priority_queue<int,vector<int>>p;//默认最大堆。
 //插入logK，n个；logk为高度
 ```
 
+<a id="markdown-复杂数据结构构造器" name="复杂数据结构构造器"></a>
 ## 复杂数据结构构造器
 
+<a id="markdown-trie树" name="trie树"></a>
 ### Trie树
+
 ```cpp
 struct TrieNode {
     public:
@@ -57,7 +64,9 @@ struct TrieNode {
 };
 ```
 
+<a id="markdown-lru缓存实现" name="lru缓存实现"></a>
 ### LRU缓存实现
+
 >>//构造List存储pair<k,v>;//构造Map存储<k,List->pointer>
 ```cpp
 class LRUCache{
@@ -94,7 +103,9 @@ private:
 
 ```
 
+<a id="markdown-快排" name="快排"></a>
 ### 快排
+
 >>传说中的实习面试必考
 i为分割节点，左边i+1个数就是最小的i+1个数
 ```cpp
@@ -119,11 +130,14 @@ int[] QuickSort(int nums[], int start, int end){
 }
 ```
 
+<a id="markdown-mr实现矩阵相乘" name="mr实现矩阵相乘"></a>
 ### MR实现矩阵相乘
 
 ![avatar](img/MRMatrix.png)
 
+<a id="markdown-生成随机数" name="生成随机数"></a>
 ### 生成随机数
+
 ![](img/rand.png)
 ```cpp
 while(1){
@@ -132,7 +146,9 @@ while(1){
         return x%b;
 ```
 
+<a id="markdown-计算器" name="计算器"></a>
 ### 计算器
+
 初始op为+，保存连续的两个运算符op,c：先结算op；然后判断当c是+-时将中间结果累加到res。
 ```cpp
 //25x4x3+20x3
@@ -163,7 +179,9 @@ for(int i=0;i < n;i++){
 return res;
 ```
 
+<a id="markdown-kmp" name="kmp"></a>
 ### KMP
+
 >>字符串匹配算法
 ```cpp
 void KMP(string ss, string tmp, vector< int > f) {
