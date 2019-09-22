@@ -2,10 +2,12 @@
 
 - [数据结构与算法](#数据结构与算法)
   - [常用STL函数与数据结构](#常用stl函数与数据结构)
+  - [好几大排序](#好几大排序)
   - [复杂数据结构构造器](#复杂数据结构构造器)
     - [Trie树](#trie树)
     - [LRU缓存实现](#lru缓存实现)
-    - [快排](#快排)
+  - [基本算法题](#基本算法题)
+    - [快排-传说中的实习面试必考](#快排-传说中的实习面试必考)
     - [MR实现矩阵相乘](#mr实现矩阵相乘)
     - [生成随机数](#生成随机数)
     - [计算器](#计算器)
@@ -45,6 +47,15 @@ priority queue<int,vectot<int>,less<int>>big_heap;  //构造最大堆
 priority_queue<int,vector<int>>p;//默认最大堆。
 //插入logK，n个；logk为高度
 ```
+
+<a id="markdown-好几大排序" name="好几大排序"></a>
+## 好几大排序
+[排序算法整理](https://blog.csdn.net/zxzxzx0119/article/details/79826380)
+>>冒泡排序、改进的冒泡排序(鸡尾酒排序)、选择排序、插入排序、二分插入排序、希尔排序、快速排序、归并排序、堆排序、计数排序、基数排序、桶排序
+
+![](img/sort.png)
+**排序算法的稳定性：保证排序前后两个相等的数的相对顺序不变**
+
 
 <a id="markdown-复杂数据结构构造器" name="复杂数据结构构造器"></a>
 ## 复杂数据结构构造器
@@ -103,32 +114,34 @@ private:
 
 ```
 
-<a id="markdown-快排" name="快排"></a>
-### 快排
+<a id="markdown-基本算法题" name="基本算法题"></a>
+## 基本算法题
 
->>传说中的实习面试必考
-i为分割节点，左边i+1个数就是最小的i+1个数
+<a id="markdown-快排-传说中的实习面试必考" name="快排-传说中的实习面试必考"></a>
+### 快排-传说中的实习面试必考
+
 ```cpp
-int[] QuickSort(int nums[], int start, int end){
-    if (start < end){
-        int i = start;
-        int j = last;
-        int base = nums[i];
-        while (i < j){
-            while (i < j &&  nums[j]>=base)
-                j--;
-            nums[i] = nums[j];
-            while (i < j &&  nums[i]<=base)
-                i++;
-            nums[j] = nums[i];
-        }
-        nums[i] = base;
-        QuickSort(nums, start, i - 1);
-        QuickSort(nums, i + 1, last);
+int partition(vector<int> nums, int start, int end){
+    int key = nums[start];
+    while (start < end) {
+        while (start < end and nums[end] >= key)
+            end --;
+        nums[start] = nums[end];
+        while (start < end and nums[start] <= key)
+            start ++;
+        nums[end] = nums[start];
+        nums[start] = key;
     }
-    return nums;
+    return start;
+}
+void quick_sort(vector<int>nums, int start, int end){
+    if(start== end) return;
+    int k = partition(nums, start, end);
+    quick_sort(nums, start, index-1);
+    quick_sort(nums, index+1, end);
 }
 ```
+
 
 <a id="markdown-mr实现矩阵相乘" name="mr实现矩阵相乘"></a>
 ### MR实现矩阵相乘
