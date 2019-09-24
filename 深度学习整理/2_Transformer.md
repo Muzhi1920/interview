@@ -22,11 +22,12 @@
 <a id="markdown-一encoder" name="一encoder"></a>
 ## 一、Encoder
 ![avatar](https://img-blog.csdnimg.cn/20181218173013893)
+
 Transformer的encoder中，数据首先会经过一个叫做‘self-attention’的模块得到一个加权之后的特征向量$Z$，这个$Z$便是论文公式1中的 $\text{Attention}(Q,K,V)$
 $$\text{Attention}(Q,K,V)=\text{softmax}(\frac{QK^T}{\sqrt{d_k}})V \tag1$$
-得到$Z$之后，它会被送到encoder的下一个模块，即Feed Forward Neural Network。这个全连接有两层，第一层的激活函数是ReLU，第二层是一个线性激活函数，可以表示为：
+**得到$Z$之后，加上残差网络结构然后被送到encoder的下一个模块，即Feed Forward Neural Network**。这个全连接有两层，第一层的激活函数是ReLU，第二层是一个线性激活函数，可以表示为：
 $$\text{FFN}(Z) = max(0, ZW_1 +b_1)W_2 + b_2 \tag2$$
-
+**FFN输出后加上残差网络结构输出到下一层**
 <a id="markdown-11从self-attention到multihead-attention" name="11从self-attention到multihead-attention"></a>
 ### 1.1、从self-Attention到MultiHead-Attention
 在self-attention中，每个单词有3个不同的向量，它们分别是Query向量（ Q ），Key向量（ K ）和Value向量（ V ），长度均是64。它们是通过3个不同的权值矩阵由嵌入向量 X 乘以三个不同的权值矩阵$W^Q$，$W^K$,$W^V$ 得到，其中三个矩阵的尺寸也是相同的。均是$512\times 64$.
@@ -46,8 +47,10 @@ $$\text{FFN}(Z) = max(0, ZW_1 +b_1)W_2 + b_2 \tag2$$
 
 <a id="markdown-二残差网络" name="二残差网络"></a>
 ## 二、残差网络
-原因：实际上随着网络深度的加深，训练错误会先减少，然后增多；深度越深意味着用优化算法越难训练，冗余的网络层学习了不是恒等映射的参数造成，DNN(x)!=x不是恒等映射后面就会学偏。
-解决：引入残差网络希望这些冗余层能够完成恒等映射，保证DNN(x)=x。有助于解决梯度消失和梯度爆炸问题，让我们在训练更深网络的同时，又能保证良好的性能。
+- 为什么使用残差网络
+  1. 实际上随着网络深度的加深，训练错误会先减少，然后增多；
+  2. 深度越深越难训练，冗余的网络层不是恒等映射；**DNN(x)!=x不是恒等映射后面就会学偏**。
+- 解决：引入残差网络希望这些冗余层能够完成恒等映射，保证DNN(x)=x。有助于解决梯度消失和梯度爆炸问题，让我们在训练更深网络的同时，又能保证良好的性能。
 
 <a id="markdown-三position-encoding" name="三position-encoding"></a>
 ## 三、Position encoding
@@ -72,7 +75,7 @@ $$
 
 <a id="markdown-1lstm与rnntransformer比较" name="1lstm与rnntransformer比较"></a>
 ### 1、LSTM与RNN，Transformer比较
-- RNN：易梯度消失；（梯度<1反向传播越乘越小或者越大）
+- RNN：易梯度消失；（梯度小于1，反向传播越乘越小）
 - LSTM：缓解梯度消失；缓解长期依赖；但路径复杂，模型训练复杂
 - Transformer：可并行计算，解决长期依赖
 
