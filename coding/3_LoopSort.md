@@ -1,3 +1,4 @@
+<a id="markdown-循环排序" name="循环排序"></a>
 # 循环排序
 处理给定范围内数字的数组问题；一般要求O(N)解决。思路就是对应数字放到对应位置。
 
@@ -19,18 +20,20 @@
 正整数位：1~N；
 
 ```cpp
-遍历nums{
-    while(1<=nums[i]<=N)and(nums[i]!=nums[nums[i]-1])：//nums[i]不在i-1位置上
+for(int i=0;i<nums.size();i++){
+    while(1<=nums[i]<=N) && (nums[i]!=nums[nums[i]-1]){ //nums[i]不在i-1位置上
         swap(num[i],nums[i-1]);
 }
-遍历nums{
+for(int i=0;i<nums.size();i++){
     if(nums[i]!=i+1):
         return i+1;
 }
 return N+1; //都满足条件，返回N+1
 ```
 
+<a id="markdown-寻找重复数" name="寻找重复数"></a>
 ## 寻找重复数
+<a id="markdown-环的快慢指针实现寻找重复数" name="环的快慢指针实现寻找重复数"></a>
 ### 环的快慢指针实现寻找重复数
 >>在下标范围内，对数值索引会得到一个环，环的起点就是重复数字；同有环链表。查找N+1个数字，范围在[1,N]
 ```cpp
@@ -50,6 +53,7 @@ while(1){
 return slow;
 ```
 
+<a id="markdown-循环排序实现寻找重复数" name="循环排序实现寻找重复数"></a>
 ### 循环排序实现寻找重复数
 >>数组中某些数字是重复的，但不知道有几个数字重复了，也不知道每个数字重复了几次。N个数字都在[0,N-1]]的范围内。
 ```cpp
@@ -63,6 +67,7 @@ for(int i = 0; i < nums.size(); ++i){
 }
 ```
 
+<a id="markdown-最小的k个数" name="最小的k个数"></a>
 ### 最小的k个数
 >>4,5,1,6,2,7,3,8  O(k*n)=O(n)
 ```cpp
@@ -104,6 +109,7 @@ vector<int> GetLeastNumbers(vector<int> input, int k){
 }
 ```
 
+<a id="markdown-众数" name="众数"></a>
 ## 众数
 >>找到超过某个数量的数字
 ```cpp

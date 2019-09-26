@@ -1,3 +1,4 @@
+<a id="markdown-二分查找" name="二分查找"></a>
 # 二分查找
 使用二分的前提是给定链表或数组是有序的；在此基础上的变形比如排序树组旋转；两个有序数组的中位数
 
@@ -12,29 +13,31 @@
 
 <!-- /TOC -->
 
+<a id="markdown-旋转数组的搜索target" name="旋转数组的搜索target"></a>
 ## 旋转数组的搜索target
 >>含重复元素
 ```cpp
 while(left <= right){
     if(num[mid]==target)
         return true;
+    else if (num[mid] > num[right]){
+        if(num[left] <= target < num[mid])
+            right=mid-1;
+        else
+            left=mid+1;
+    } 
     else if (num[mid] < num[right]){
         if(num[mid] < target <= num[right])
             left=mid+1;
         else
             right=mid-1;
     }
-    else if(num[mid] > right){
-        if(num[left] <= target < num[mid])
-            right=mid-1;
-        else
-            left=mid+1;
-    }
     else
         right--;
 return false;
 ```
 
+<a id="markdown-旋转数组找min" name="旋转数组找min"></a>
 ## 旋转数组找min
 >>（含重复元素）
 ```cpp
@@ -52,6 +55,7 @@ return min(num[left],num[right],num[res]);//若是重复元素处切分
 ```
 
 
+<a id="markdown-寻找两个有序数组中位数" name="寻找两个有序数组中位数"></a>
 ## 寻找两个有序数组中位数
 ```cpp
 double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
@@ -78,6 +82,7 @@ int findKth(vector<int>& nums1, int i, vector<int>& nums2, int j, int k) {
 }
 ```
 
+<a id="markdown-逆序数" name="逆序数"></a>
 ## 逆序数
 3-2-4-1
 ```cpp
