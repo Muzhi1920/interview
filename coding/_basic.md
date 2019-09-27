@@ -1,17 +1,17 @@
 <!-- TOC -->
 
-- [数据结构与算法](#数据结构与算法)
-    - [常用STL函数与数据结构](#常用stl函数与数据结构)
-    - [好几大排序](#好几大排序)
-    - [复杂数据结构构造器](#复杂数据结构构造器)
-        - [Trie树](#trie树)
-        - [LRU缓存实现](#lru缓存实现)
-    - [基本算法题](#基本算法题)
-        - [快排-传说中的实习面试必考](#快排-传说中的实习面试必考)
-        - [MR实现矩阵相乘](#mr实现矩阵相乘)
-        - [生成随机数](#生成随机数)
-        - [计算器](#计算器)
-        - [KMP](#kmp)
+1. [数据结构与算法](#数据结构与算法)
+   1. [常用STL函数与数据结构](#常用stl函数与数据结构)
+   2. [好几大排序](#好几大排序)
+   3. [复杂数据结构构造器](#复杂数据结构构造器)
+      1. [Trie树](#trie树)
+      2. [LRU缓存实现](#lru缓存实现)
+   4. [基本算法题](#基本算法题)
+      1. [快排-传说中的实习面试必考](#快排-传说中的实习面试必考)
+      2. [MR实现矩阵相乘](#mr实现矩阵相乘)
+      3. [生成随机数](#生成随机数)
+      4. [计算器](#计算器)
+      5. [KMP](#kmp)
 
 <!-- /TOC -->
 
@@ -124,10 +124,10 @@ private:
 int partition(vector<int> nums, int start, int end){
     int key = nums[start];
     while (start < end) {
-        while (start < end and nums[end] >= key)
+        while (start < end && nums[end] >= key)
             end --;
         nums[start] = nums[end];
-        while (start < end and nums[start] <= key)
+        while (start < end && nums[start] <= key)
             start ++;
         nums[end] = nums[start];
         nums[start] = key;
