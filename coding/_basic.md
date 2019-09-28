@@ -1,17 +1,20 @@
 <!-- TOC -->
 
-1. [数据结构与算法](#数据结构与算法)
-   1. [常用STL函数与数据结构](#常用stl函数与数据结构)
-   2. [好几大排序](#好几大排序)
-   3. [复杂数据结构构造器](#复杂数据结构构造器)
-      1. [Trie树](#trie树)
-      2. [LRU缓存实现](#lru缓存实现)
-   4. [基本算法题](#基本算法题)
-      1. [快排-传说中的实习面试必考](#快排-传说中的实习面试必考)
-      2. [MR实现矩阵相乘](#mr实现矩阵相乘)
-      3. [生成随机数](#生成随机数)
-      4. [计算器](#计算器)
-      5. [KMP](#kmp)
+- [数据结构与算法](#数据结构与算法)
+    - [常用STL函数与数据结构](#常用stl函数与数据结构)
+    - [好几大排序](#好几大排序)
+    - [复杂数据结构构造器](#复杂数据结构构造器)
+        - [Trie树](#trie树)
+        - [LRU缓存实现](#lru缓存实现)
+    - [基本算法题](#基本算法题)
+        - [平生不识TwoSum，刷尽力扣也枉然](#平生不识twosum刷尽力扣也枉然)
+        - [行列递增数组的查找](#行列递增数组的查找)
+        - [移除K个数字](#移除k个数字)
+        - [快排-传说中的实习面试必考](#快排-传说中的实习面试必考)
+        - [MR实现矩阵相乘](#mr实现矩阵相乘)
+        - [生成随机数](#生成随机数)
+        - [计算器](#计算器)
+        - [KMP](#kmp)
 
 <!-- /TOC -->
 
@@ -116,6 +119,88 @@ private:
 
 <a id="markdown-基本算法题" name="基本算法题"></a>
 ## 基本算法题
+
+<a id="markdown-平生不识twosum刷尽力扣也枉然" name="平生不识twosum刷尽力扣也枉然"></a>
+### 平生不识TwoSum，刷尽力扣也枉然
+
+```cpp
+//{1, 1, 2, 3, 4, 4, 4, 7, 7, 8, 9, 10},8
+vector<pair<int, int>> twoSum(vector<int> nums, int target) {
+    map<int, int> m;
+    vector<pair<int, int>> res;
+    for (int i = 0; i < nums.size(); ++i) {
+        m[nums[i]]++;
+    }
+    for (int i = 0; i < nums.size(); ++i) {
+        if (m[target - nums[i]] > 0) {
+            if (nums[i] == target / 2 && m[nums[i]] == 1)
+                continue;
+            res.push_back(make_pair(nums[i], target - nums[i]));
+            m[target - nums[i]]--;
+            m[nums[i]]--;
+        }
+    }
+    return res;
+}
+```
+
+<a id="markdown-行列递增数组的查找" name="行列递增数组的查找"></a>
+### 行列递增数组的查找
+```cpp
+bool fun(vector<vector<int>> nums, int target) {
+    //列二分，核心判断在哪一行通过mid和mid+1
+    int l = 0, r = nums.size();
+    int j, mid;
+    while (l < r) {
+        mid = (l + r) / 2;
+        if (nums[mid][0] == target)
+            return true;
+        else if (nums[mid][0] > target) {
+            r--;
+        } else {
+            if (nums[mid + 1][0] > target)
+                break;
+        }
+    }
+    j = mid;
+    l = 0;
+    r = nums[0].size();
+    //对j行再进行二分
+    while (l < r) {
+        mid = (l + r) / 2;
+        if (nums[j][mid] == target)
+            return true;
+        else if (nums[j][mid] > target) {
+            r--;
+        } else {
+            l++;
+        }
+    }
+    return false;
+}
+```
+
+
+
+<a id="markdown-移除k个数字" name="移除k个数字"></a>
+### 移除K个数字
+```cpp
+string removeKdigits(string num, int k) {
+    string res;
+    int n = num.size(), keep = n - k;
+    for (char c : num) {
+        while (k && res.size() && res.back() > c) {
+            res.pop_back();
+            --k;
+        }
+        if (res.size() || c != '0')
+            res.push_back(c);
+    }
+    while (res.size() && k--) res.pop_back();
+    return res.empty() ? "0" : res;
+}
+
+```
 
 <a id="markdown-快排-传说中的实习面试必考" name="快排-传说中的实习面试必考"></a>
 ### 快排-传说中的实习面试必考
