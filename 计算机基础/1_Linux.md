@@ -1,4 +1,5 @@
 # Linux
+
 - ps：查看当前进程
   1. ps -ef (system v 输出) 
   2. ps -aux bsd 格式输出
