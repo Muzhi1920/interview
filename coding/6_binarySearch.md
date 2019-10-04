@@ -10,6 +10,7 @@
     - [旋转数组找min](#旋转数组找min)
     - [寻找两个有序数组中位数](#寻找两个有序数组中位数)
     - [逆序数](#逆序数)
+    - [山脉三题](#山脉三题)
 
 <!-- /TOC -->
 
@@ -114,4 +115,79 @@ BST_insert(root,node,count_small){
             root->right=node;
     }
 }
+```
+
+<a id="markdown-山脉三题" name="山脉三题"></a>
+## 山脉三题
+```cpp
+//判断山峰
+bool validMountainArray(int[] A) {
+    if (A == null || A.size() < 3)
+        return false;
+    int n = A.size() - 1;
+    int l = 0, r = n;
+    while (l < n) {
+        if (A[l] < A[l + 1])
+            l++;
+        else
+            break;
+    }
+    while (r >= 1) {
+        if (A[r] < A[r - 1])
+            r--;
+        else
+            break;
+    }
+    return l > 0 && r < n && l == r;
+}
+
+//寻找峰顶
+int peakIndexInMountainArray(int[] A) {
+    int l = 1, r = A.size() - 1;
+    while (l < r) {
+        int mid = l + (r - l) / 2;
+        if (A[mid] > A[mid - 1] && A[mid] < A[mid + 1]) {
+            l = mid + 1;
+        } else {
+            r = mid;
+        }
+    }
+    return l;
+}
+
+//寻找最长山脉-上下长度
+int longestMountain(vector<int>& A) {
+    int res = 0, up = 0, down = 0, n = A.size();
+    for (int i = 1; i < n; ++i) {
+        if ((down && A[i - 1] < A[i]) || (A[i - 1] == A[i])) {
+            up = down = 0;
+        }
+        if (A[i - 1] < A[i]) ++up;
+        if (A[i - 1] > A[i]) ++down;
+        if (up > 0 && down > 0) res = max(res, up + down + 1);
+    }
+    return res;
+}
+
+//寻找最长山脉-左右索引
+int longestMountain(vector<int>& A) {
+    int res = 0, n = A.size();int l,r
+    for (int i = 1; i < n - 1; ++i) {
+        if (A[i - 1] < A[i] && A[i + 1] < A[i]) {
+            int left = i - 1, right = i + 1;
+            while (left > 0 && A[left - 1] < A[left]) --left;
+            while (right < n - 1 && A[right] > A[right + 1]) ++right;
+            if(right-left+1>res){
+                res=right-left+1;
+                l=left;
+                r=right;
+            }
+        }
+    }
+    return res;
+}
+//两种方法复杂度分析：上下长度：不能得到左右下标，仅能通过长度相加得到山脉长度；左右索引：通过索引得到长度。
+上下长度：O(N)时间；
+左右索引：峰的个数m；平均峰的长度为n/m；所以每个峰在while中循环n/m次。最终复杂度也为O(N)。
+
 ```
