@@ -160,6 +160,7 @@ bool fun(vector<vector<int>> nums, int target) {
         } else {
             if (nums[mid + 1][0] > target)
                 break;
+            l++;
         }
     }
     j = mid;
@@ -180,23 +181,23 @@ bool fun(vector<vector<int>> nums, int target) {
 }
 ```
 
-
-
 <a id="markdown-移除k个数字" name="移除k个数字"></a>
 ### 移除K个数字
 ```cpp
 string removeKdigits(string num, int k) {
     string res;
-    int n = num.size(), keep = n - k;
+    int n = num.size();
     for (char c : num) {
         while (k && res.size() && res.back() > c) {
             res.pop_back();
             --k;
         }
+        //前导0
         if (res.size() || c != '0')
             res.push_back(c);
     }
-    while (res.size() && k--) res.pop_back();
+    while (res.size() && k--)
+        res.pop_back();
     return res.empty() ? "0" : res;
 }
 
