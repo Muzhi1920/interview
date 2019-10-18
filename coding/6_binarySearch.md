@@ -41,18 +41,22 @@ return false;
 <a id="markdown-旋转数组找min" name="旋转数组找min"></a>
 ## 旋转数组找min
 >>（含重复元素）
+
 ```cpp
-while (left < right-1){
-    if(num[mid] > num[left]) //说明中值在左侧递增内,与左侧值比
-        res=min(res,num[left]);
-        left=mid+1;
-    else if(num[mid] < num[left]) //说明在右侧递增区间内，与右侧值比
-        res=min(res,num[right]);
-        right=mid;
-    else
-        left++;
+int left = 0, right = nums.size() - 1, res = nums[0];
+while (left < right - 1) {
+    int mid = (right + left) / 2;
+    if (nums[left] < nums[mid]) {
+        res = min(res, nums[left]);
+        left = mid + 1;
+    } else if (nums[left] > nums[mid]) {
+        res = min(res, nums[right]);
+        right = mid;
+    } else 
+        ++left;
 }
-return min(num[left],num[right],num[res]);//若是重复元素处切分
+res = min(res, nums[left]，nums[right]);
+return res;
 ```
 
 

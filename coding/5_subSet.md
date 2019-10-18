@@ -1,3 +1,4 @@
+<a id="markdown-子集问题" name="子集问题"></a>
 # 子集问题
 要明确的问题在于，递归+回溯得到所有子集，就是指数级复杂度，等同于brute force。将子集问题变为迭代问题，并且保证结果无重复子集。
 
@@ -6,14 +7,17 @@
 
 - [子集问题](#子集问题)
     - [对数组取子集](#对数组取子集)
+    - [字符串全排列](#字符串全排列)
     - [对字符串取子集](#对字符串取子集)
     - [移除K个数字使得值更小](#移除k个数字使得值更小)
     - [最长上升子序列](#最长上升子序列)
 
 <!-- /TOC -->
 
+<a id="markdown-对数组取子集" name="对数组取子集"></a>
 ## 对数组取子集
 >>包含重复元素
+
 ```cpp
 res={{}},last=s[0];
 sort(nums.begin(),nums.end());
@@ -30,8 +34,34 @@ for(int i=0;i<nums.size();i++){
 return res;
 ```
 
+<a id="markdown-字符串全排列" name="字符串全排列"></a>
+## 字符串全排列
+
+```cpp
+void generate(char *pStr, char *pBegin) {
+    if (*pBegin == '\0') {
+        printf("%s\n", pStr);
+    } else {
+        for (char *pCh = pBegin; *pCh != '\0'; ++pCh) {
+            char temp = *pCh;
+            *pCh = *pBegin;
+            *pBegin = temp;
+
+            generate(pStr, pBegin + 1);
+
+            temp = *pCh;
+            *pCh = *pBegin;
+            *pBegin = temp;
+        }
+    }
+}
+
+```
+
+<a id="markdown-对字符串取子集" name="对字符串取子集"></a>
 ## 对字符串取子集
 >>转变大小写获得新的字符串
+
 ```cpp
 res={""};
 for (char c : S) {
@@ -50,7 +80,9 @@ for (char c : S) {
 return res;
 ```
 
+<a id="markdown-移除k个数字使得值更小" name="移除k个数字使得值更小"></a>
 ## 移除K个数字使得值更小
+
 ```cpp
 for (char c : num) {
     //从前往后，有比当前大的就替换。保证排在前面的更小
@@ -66,7 +98,9 @@ while (res.size() && k--)
 return res.empty() ? "0" : res;
 ```
 
+<a id="markdown-最长上升子序列" name="最长上升子序列"></a>
 ## 最长上升子序列
+
 ```cpp
 stack ss{nums[0]};
 for(int num:nums)

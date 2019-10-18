@@ -84,6 +84,40 @@ for(int i = 0; i < nums.size(); ++i){
 }
 ```
 
+### 二分查找实现寻找重复数
+循环排序改变了原数组，O(N)，二分查找O(N*logN)
+>>start,middle,end范围在：0、1、2、3、4、5、6.对区间二分
+```cpp
+int countRange(int *numbers, int length, int start, int end) {
+    int count = 0;
+    for (int i = 0; i < length; i++)
+        if (numbers[i] >= start && numbers[i] <= end)
+            ++count;
+    return count;
+}
+int getDuplication(const int *numbers, int length) {
+    int start = 0;
+    int end = length - 1;
+    while (end >= start) {
+        int middle = (end + start)/2;
+        int count = countRange(numbers, length, start, middle);
+        if (end == start) {
+            if (count > 1)
+                return start;
+            else
+                break;
+        }
+        //该范围有重数
+        if (count > (middle - start + 1))
+            end = middle;
+        else
+            start = middle + 1;
+    }
+    return -1;
+}
+```
+
+
 <a id="markdown-最小的k个数" name="最小的k个数"></a>
 ### 最小的k个数
 >>4,5,1,6,2,7,3,8  O(k*n)=O(n)
