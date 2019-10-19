@@ -36,26 +36,22 @@ return res;
 
 <a id="markdown-字符串全排列" name="字符串全排列"></a>
 ## 字符串全排列
+![](img/permutation.png)
 
 ```cpp
-void generate(char *pStr, char *pBegin) {
-    if (*pBegin == '\0') {
-        printf("%s\n", pStr);
+string ss = "abc";
+void generate(int i) {
+    if (i == ss.length()) {
+        cout << ss << endl;
     } else {
-        for (char *pCh = pBegin; *pCh != '\0'; ++pCh) {
-            char temp = *pCh;
-            *pCh = *pBegin;
-            *pBegin = temp;
-
-            generate(pStr, pBegin + 1);
-
-            temp = *pCh;
-            *pCh = *pBegin;
-            *pBegin = temp;
+        for (int ch = i; ch < ss.length(); ++ch) {
+            swap(ss[ch], ss[i]);
+            generate(i + 1);
+            swap(ss[ch], ss[i]);
         }
     }
 }
-
+generate(0);
 ```
 
 <a id="markdown-对字符串取子集" name="对字符串取子集"></a>
