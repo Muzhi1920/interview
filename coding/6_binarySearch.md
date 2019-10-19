@@ -7,6 +7,7 @@
 
 - [二分查找](#二分查找)
         - [二分查找实现寻找重复数](#二分查找实现寻找重复数)
+    - [有序数组某数字的出现次数](#有序数组某数字的出现次数)
     - [旋转数组的搜索target](#旋转数组的搜索target)
     - [旋转数组找min](#旋转数组找min)
     - [寻找两个有序数组中位数](#寻找两个有序数组中位数)
@@ -48,6 +49,27 @@ int getDuplication(const int *numbers, int length) {
             start = middle + 1;
     }
     return -1;
+}
+```
+
+<a id="markdown-有序数组某数字的出现次数" name="有序数组某数字的出现次数"></a>
+## 有序数组某数字的出现次数
+>>两次二分查找下标
+
+```cpp
+int biSearch(vector<int> nums, float num) {
+    int left = 0, right = nums.size() - 1;
+    while (left <= right) {
+        int mid = (right + left) / 2;
+        if (nums[mid] < num)
+            left = mid + 1;
+        else if (nums[mid] > num)
+            right = mid - 1;
+    }
+    return left;
+}
+int find(vector<int> nums, int target) {
+    return biSearch(nums, target + 0.5f) - biSearch(nums, target - 0.5f);
 }
 ```
 
