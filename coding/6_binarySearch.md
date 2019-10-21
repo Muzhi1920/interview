@@ -54,7 +54,7 @@ int getDuplication(const int *numbers, int length) {
 
 <a id="markdown-有序数组某数字的出现次数" name="有序数组某数字的出现次数"></a>
 ## 有序数组某数字的出现次数
->>两次二分查找下标
+>>两次二分查找下标相减
 
 ```cpp
 int biSearch(vector<int> nums, float num) {
